@@ -99,6 +99,8 @@ class MNIST_MLP(object):
         h1 = self.fc1.forward(input)
         h1 = self.relu1.forward(h1)
         h2 = self.fc2.forward(h1) # TODO：第二层全连接层的前向传播
+        h2 = self.relu2.forward(h2) # TODO：第二层 ReLU 激活层的前向传播
+        h3 = self.fc3.forward(h2) # TODO：第三层全连接层的前向传播
         prob = self.softmax.forward(h3) # TODO：第三层全连接层的前向传播
         return prob
 
@@ -106,6 +108,8 @@ class MNIST_MLP(object):
         # TODO：神经网络的反向传播
         dloss = self.softmax.backward() # TODO：第三层全连接层的反向传播
         dh3 = self.fc3.backward(dloss) # TODO：第三层全连接层的反向传播
+        dh2 = self.relu2.backward(dh3) # TODO：第二层 ReLU 激活层的反向传播
+        dh2 = self.fc2.backward(dh2) # TODO：第二层全连接层的反向传播
         dh1 = self.relu1.backward(dh2) # TODO：第二层 ReLU 激活层的反向传播
         dh1 = self.fc1.backward(dh1)
 

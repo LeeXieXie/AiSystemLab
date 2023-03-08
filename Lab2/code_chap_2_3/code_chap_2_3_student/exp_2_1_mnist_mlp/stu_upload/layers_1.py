@@ -6,8 +6,8 @@ import time
 
 class FullyConnectedLayer(object):
     def __init__(self, num_input, num_output):  # 全连接层初始化
-        self.num_input = num_input
-        self.num_output = num_output
+        self.num_input = num_input # 输入维度 
+        self.num_output = num_output # 输出维度
         print('\tFully connected layer with input %d, output %d.' % (self.num_input, self.num_output))
     def init_param(self, std=0.01):  # 参数初始化
         self.weight = np.random.normal(loc=0.0, scale=std, size=(self.num_input, self.num_output))
@@ -15,14 +15,19 @@ class FullyConnectedLayer(object):
     def forward(self, input):  # 前向传播计算
         start_time = time.time()
         self.input = input
-        # TODO：全连接层的前向传播，计算输出结果
-        self.output = ________________
-        return self.output
+        # TODO：全连接层的前向传播，计算输出结果 
+        self.output = self.input.dot(self.weight) + self.bias 
+        return self.output 
     def backward(self, top_diff):  # 反向传播的计算
         # TODO：全连接层的反向传播，计算参数梯度和本层损失
-        self.d_weight = ________________
-        self.d_bias = ________________
-        bottom_diff = ________________
+        '''
+            self.d_weight = np.matmul(self.input.T, top_diff) # dL/dW
+            self.d_bias = np.matmul(np.ones([self.input.shape[0], 1]).T, top_diff) # dL/db
+            bottom_diff = np.matmul(top_diff, self.weight.T) # dL/dX
+        '''
+        self.d_weight = np.matmul(self.input.T, top_diff) # dL/dW
+        self.d_bias = np.matmul(np.ones([self.input.shape[0], 1]).T, top_diff) # dL/db
+        bottom_diff = np.matmul(top_diff, self.weight.T) # dL/dX
         return bottom_diff
     def update_param(self, lr):  # 参数更新
         # TODO：对全连接层参数利用参数进行更新
@@ -47,7 +52,7 @@ class ReLULayer(object):
         return output
     def backward(self, top_diff):  # 反向传播的计算
         # TODO：ReLU层的反向传播，计算本层损失
-        bottom_diff = ________________
+        bottom_diff = np.where(self.input > 0, top_diff, 0) # ReLU
         return bottom_diff
 
 class SoftmaxLossLayer(object):
@@ -57,7 +62,7 @@ class SoftmaxLossLayer(object):
         # TODO：softmax 损失层的前向传播，计算输出结果
         input_max = np.max(input, axis=1, keepdims=True)
         input_exp = np.exp(input - input_max)
-        self.prob = ________________
+        self.prob = input_exp / np.sum(input_exp, axis=1, keepdims=True) # softmax
         return self.prob
     def get_loss(self, label):   # 计算损失
         self.batch_size = self.prob.shape[0]
