@@ -31,8 +31,8 @@ class FullyConnectedLayer(object):
         return bottom_diff
     def update_param(self, lr):  # 参数更新
         # TODO：对全连接层参数利用参数进行更新
-        self.weight = ________________
-        self.bias = ________________
+        self.weight = self.weight - lr * self.d_weight # W = W - lr * dL/dW
+        self.bias = self.nias - lr * self.d_bias # b = b - lr * dL/db
     def load_param(self, weight, bias):  # 参数加载
         assert self.weight.shape == weight.shape
         assert self.bias.shape == bias.shape
@@ -48,7 +48,8 @@ class ReLULayer(object):
         start_time = time.time()
         self.input = input
         # TODO：ReLU层的前向传播，计算输出结果
-        output = ________________
+        # relu = max(0, input)
+        output = max(0, self.input) # ReLU  
         return output
     def backward(self, top_diff):  # 反向传播的计算
         # TODO：ReLU层的反向传播，计算本层损失
@@ -72,6 +73,7 @@ class SoftmaxLossLayer(object):
         return loss
     def backward(self):  # 反向传播的计算
         # TODO：softmax 损失层的反向传播，计算本层损失
-        bottom_diff = ________________
+        # softmax = (prob - label_onehot) / batch_size
+        bottom_diff = (self.prob - self.label_onehot) / self.batch_size
         return bottom_diff
 
