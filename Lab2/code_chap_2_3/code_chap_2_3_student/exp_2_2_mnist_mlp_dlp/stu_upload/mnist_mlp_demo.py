@@ -43,8 +43,7 @@ class MNIST_MLP(object):
         self.net.createReluLayer('relu2')
         # fc3
         self.net.createMlpLayer('fc3', out_classes, self.input_quant_params[2])
-        #relu3
-        self.net.createReluLayer('relu3')
+        
         # softmax
         self.net.createSoftmaxLayer('sf', axis=1) # axis=1表示对每一行进行softmax
     
