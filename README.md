@@ -15,11 +15,13 @@
     上传的 mnist mlp 网络的 cpu 实现，即实验2-1中完成的 mnist_mlp_cpu.py 文件，需要做出以下修改：
 
 修改 build_mnist_mlp() 函数中的内容：
-    1.  修改 batch_size.
+
+1.  修改 batch_size.
     将 mlp = MNIST_MLP(hidden1=h1, hidden2=h2, max_epoch=e) 
     修改为 mlp = MNIST_MLP(batch_size=10000, hidden1=h1, hidden2=h2, max_epoch=e)
 
-    2.  注释掉训练的函数
+
+2.  注释掉训练的函数
     mlp.train()
     和
     mlp.save_model('mlp-%d-%d-%depoch.npy' % (h1, h2, e))
