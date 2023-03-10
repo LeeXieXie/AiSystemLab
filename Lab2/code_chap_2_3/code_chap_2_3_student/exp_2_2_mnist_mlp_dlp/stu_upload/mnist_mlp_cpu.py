@@ -51,10 +51,10 @@ class MNIST_MLP(object):
     def load_data(self):
         # TODO: 调用函数 load_mnist 读取和预处理 MNIST 中训练数据和测试数据的图像和标记
         print('Loading MNIST data from files...')
-        train_images = self.load_mnist(os.path.join(MNIST_DIR, TRAIN_DATA), True)
-        train_labels = ________________
-        test_images = ________________
-        test_labels = ________________
+        train_images = self.load_mnist(os.path.join(MNIST_DIR, TRAIN_DATA), True) # 读取训练数据
+        train_labels = self.load_mnist(os.path.join(MNIST_DIR, TRAIN_LABEL), False) # 读取训练标记
+        test_images = self.load_mnist(os.path.join(MNIST_DIR, TEST_DATA), True) # 读取测试数据
+        test_labels = self.load_mnist(os.path.join(MNIST_DIR, TEST_LABEL), False) # 读取测试标记
         self.train_data = np.append(train_images, train_labels, axis=1)
         self.test_data = np.append(test_images, test_labels, axis=1)
         # self.test_data = np.concatenate((self.train_data, self.test_data), axis=0)
@@ -68,8 +68,8 @@ class MNIST_MLP(object):
         print('Building multi-layer perception model...')
         self.fc1 = FullyConnectedLayer(self.input_size, self.hidden1)
         self.relu1 = ReLULayer()
-        ________________
-        ________________
+        self.fc2 = FullyConnectedLayer(self.hidden1, self.hidden2) # TODO：建立第二层全连接层
+        self.relu2 = ReLULayer()  # TODO：建立第二层 ReLU 激活层
         self.fc3 = FullyConnectedLayer(self.hidden2, self.out_classes)
         self.softmax = SoftmaxLossLayer()
         self.update_layer_list = [self.fc1, self.fc2, self.fc3]
@@ -98,15 +98,19 @@ class MNIST_MLP(object):
         # TODO：神经网络的前向传播
         h1 = self.fc1.forward(input)
         h1 = self.relu1.forward(h1)
-        ________________
-        prob = self.softmax.forward(h3)
+        h2 = self.fc2.forward(h1) # TODO：第二层全连接层的前向传播
+        h2 = self.relu2.forward(h2) # TODO：第二层 ReLU 激活层的前向传播
+        h3 = self.fc3.forward(h2) # TODO：第三层全连接层的前向传播
+        prob = self.softmax.forward(h3) # TODO：第三层全连接层的前向传播
         return prob
 
     def backward(self):  # 神经网络的反向传播
         # TODO：神经网络的反向传播
-        dloss = self.softmax.backward()
-        ________________
-        dh1 = self.relu1.backward(dh2)
+        dloss = self.softmax.backward() # TODO：第三层全连接层的反向传播
+        dh3 = self.fc3.backward(dloss) # TODO：第三层全连接层的反向传播
+        dh2 = self.relu2.backward(dh3) # TODO：第二层 ReLU 激活层的反向传播
+        dh2 = self.fc2.backward(dh2) # TODO：第二层全连接层的反向传播
+        dh1 = self.relu1.backward(dh2) # TODO：第二层 ReLU 激活层的反向传播
         dh1 = self.fc1.backward(dh1)
 
     def update(self, lr):
@@ -147,9 +151,9 @@ def build_mnist_mlp(param_dir='weight.npy'):
     mlp.load_data()
     mlp.build_model()
     mlp.init_model()
-    # mlp.train()
-    # mlp.save_model('mlp-%d-%d-%depoch.npy' % (h1, h2, e))
-    mlp.load_model(param_dir)
+    mlp.train()
+    mlp.save_model('mlp-%d-%d-%depoch.npy' % (h1, h2, e))
+    # mlp.load_model('mlp-%d-%d-%depoch.npy' % (h1, h2, e))
     return mlp
 
 if __name__ == '__main__':
