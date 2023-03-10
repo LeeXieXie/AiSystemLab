@@ -36,11 +36,11 @@ class MNIST_MLP(object):
         # fc1
         self.net.createMlpLayer('fc1', hidden1, self.input_quant_params[0])
         # relu1
-        self.net.createReluLayer('relu1')
+        self.net.createReLuLayer('relu1')
         # fc2
         self.net.createMlpLayer('fc2', hidden2, self.input_quant_params[1])
         # relu2
-        self.net.createReluLayer('relu2')
+        self.net.createReLuLayer('relu2')
         # fc3
         self.net.createMlpLayer('fc3', out_classes, self.input_quant_params[2])
         
