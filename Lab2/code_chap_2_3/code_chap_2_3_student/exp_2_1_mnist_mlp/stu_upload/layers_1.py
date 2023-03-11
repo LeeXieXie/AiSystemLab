@@ -16,7 +16,7 @@ class FullyConnectedLayer(object):
         start_time = time.time()
         self.input = input
         # TODO：全连接层的前向传播，计算输出结果 
-        self.output = self.input.dot(self.weight) + self.bias 
+        self.output = self.input.dot(self.weight) + self.bias  
         return self.output 
     def backward(self, top_diff):  # 反向传播的计算
         # TODO：全连接层的反向传播，计算参数梯度和本层损失
